@@ -15,6 +15,7 @@
 - Message board features message content and timestamp (UTC-5)
 - Messages are displayed from most to least recent.
 - Each message is limited to 128 characters.
+- Delete button performs a soft delete and causes message to be removed from the message board, however, data is preserved on SQLite database and will survive an application restart
 
 ## Getting Started
 
