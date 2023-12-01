@@ -17,10 +17,10 @@ class Message(db.Model):
     deleted = db.Column(db.Boolean, default=False)
 
 # Function to clear messages
-"""def clear_messages():
+'''def clear_messages():
     with app.app_context():
         db.session.query(Message).delete()
-        db.session.commit()"""
+        db.session.commit()'''
 
 @app.route('/')
 def index():
