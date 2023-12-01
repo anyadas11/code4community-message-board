@@ -13,6 +13,15 @@ class Message(db.Model):
     content = db.Column(db.String(128), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
+# Function to clear messages
+def clear_messages():
+    with app.app_context():
+        db.session.query(Message).delete()
+        db.session.commit()
+
+# clear messages on startup
+clear_messages()
+
 @app.route('/')
 def index():
     messages = Message.query.order_by(Message.timestamp.desc()).all()
