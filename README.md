@@ -30,8 +30,8 @@ Make sure you have the following installed:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/anonymous-message-board.git
-    cd anonymous-message-board
+    git clone https://github.com/anyadas11/code4community-message-board.git
+    cd code4community-message-board
     ```
 
 2. Create a virtual environment (optional but recommended):
@@ -67,30 +67,9 @@ Make sure you have the following installed:
     flask run
     ```
 
-2. Create a virtual environment (optional but recommended):
+2. Open web browser and go to http://127.0.0.1:5000
 
-    ```bash
-    python -m venv venv
-    ```
+3. Type message into input form and push the "Post Message" button
 
-3. Activate the virtual environment:
-
-    - On Windows:
-
-        ```bash
-        venv\Scripts\activate
-        ```
-
-    - On macOS/Linux:
-
-        ```bash
-        source venv/bin/activate
-        ```
-
-4. Install dependencies:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
 
 
