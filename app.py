@@ -19,9 +19,6 @@ def clear_messages():
         db.session.query(Message).delete()
         db.session.commit()
 
-# clear messages on startup
-clear_messages()
-
 @app.route('/')
 def index():
     messages = Message.query.order_by(Message.timestamp.desc()).all()
