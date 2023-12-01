@@ -15,59 +15,81 @@
     <div id="messageBoard">
         {% for message in messages %}
             <p><span class="message">{{ message.content }}</span><br><span class="time">{{ message['timestamp'].strftime('%I:%M %p') }}</span></p>
+            <button class="deleteButton" data-message-id="{{ message.id }}">Delete</button>
         {% endfor %}
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-        // Get the form and message board elements
-        const messageForm = document.getElementById('messageForm');
-        const messageInput = document.getElementById('messageInput');
-        const messageBoard = document.getElementById('messageBoard');
+            // Get the form and message board elements
+            const messageForm = document.getElementById('messageForm');
+            const messageInput = document.getElementById('messageInput');
+            const messageBoard = document.getElementById('messageBoard');
+            const deleteButtons = document.querySelectorAll('.deleteButton');
 
-        messageForm.addEventListener('submit', function (event) {
-            event.preventDefault(); // prevents full page reload
+            messageBoard.addEventListener('click', function (event) {
+                if (event.target.classList.contains('deleteButton')) {
+                    const messageId = event.target.dataset.messageId;
 
-            // Gets message content
-            const content = messageInput.value;
-
-            // Send POST request with message content
-            fetch('/post', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({ content }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    updateMessageBoard();
-                } else {
-                    console.error('Error posting message:', data.message);
+                    // Send a request to the delete route
+                    fetch(`/delete/${messageId}`, {
+                        method: 'POST',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // Optionally update the UI to reflect the deletion
+                            updateMessageBoard();
+                        } else {
+                            console.error('Error deleting message:', data.message);
+                        }
+                    });
                 }
             });
 
-            // Clear the input field
-            messageInput.value = '';
+            messageForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // prevents full page reload
+
+                // Gets message content
+                const content = messageInput.value;
+
+                // Send POST request with message content
+                fetch('/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({ content }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        updateMessageBoard();
+                    } else {
+                        console.error('Error posting message:', data.message);
+                    }
+                });
+
+                // Clear the input field
+                messageInput.value = '';
+            });
+
+            // Function to update the message board by fetching messages from the server
+            function updateMessageBoard() {
+                fetch('/')
+                .then(response => response.text())
+                .then(html => {
+                    // Extract the content inside the messageBoard div
+                    const extractedContent = new DOMParser().parseFromString(html, 'text/html')
+                        .getElementById('messageBoard').innerHTML;
+
+                    // Update only the content inside the messageBoard div
+                    messageBoard.innerHTML = extractedContent;
+                });
+            }
+
+            // Update the message board on page load
+            updateMessageBoard();
         });
-
-        // Function to update the message board by fetching messages from the server
-        function updateMessageBoard() {
-            fetch('/')
-            .then(response => response.text())
-            .then(html => {
-                // Extract the content inside the messageBoard div
-                const extractedContent = new DOMParser().parseFromString(html, 'text/html')
-                    .getElementById('messageBoard').innerHTML;
-
-            // Update only the content inside the messageBoard div
-                messageBoard.innerHTML = extractedContent;
-        });
-}
-
-        // Update the message board on page load
-        updateMessageBoard();
-    });
     </script>
 </body>
 </html>
