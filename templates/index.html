@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={{ url_for('static', filename='css/style.css') }}>
+    <title>Anonymous Message Board</title>
+</head>
+<body>
+    <h1>Anonymous Message Board</h1>
+    <form id="messageForm">
+        <input type="text" id="messageInput" size=100 placeholder="Type your message (max 128 characters)" maxlength="128" required>
+        <button type="submit">Post Message</button>
+    </form>
+    <div id="messageBoard">
+        {% for message in messages %}
+            <p><span class="message">{{ message.content }}</span><br><span class="time">{{ message['timestamp'].strftime('%I:%M %p') }}</span></p>
+        {% endfor %}
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        // Get the form and message board elements
+        const messageForm = document.getElementById('messageForm');
+        const messageInput = document.getElementById('messageInput');
+        const messageBoard = document.getElementById('messageBoard');
+
+        messageForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // prevents full page reload
+
+            // Gets message content
+            const content = messageInput.value;
+
+            // Send POST request with message content
+            fetch('/post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({ content }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    updateMessageBoard();
+                } else {
+                    console.error('Error posting message:', data.message);
+                }
+            });
+
+            // Clear the input field
+            messageInput.value = '';
+        });
+
+        // Function to update the message board by fetching messages from the server
+        function updateMessageBoard() {
+            fetch('/')
+            .then(response => response.text())
+            .then(html => {
+                // Extract the content inside the messageBoard div
+                const extractedContent = new DOMParser().parseFromString(html, 'text/html')
+                    .getElementById('messageBoard').innerHTML;
+
+            // Update only the content inside the messageBoard div
+                messageBoard.innerHTML = extractedContent;
+        });
+}
+
+        // Update the message board on page load
+        updateMessageBoard();
+    });
+    </script>
+</body>
+</html>
