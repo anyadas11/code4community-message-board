@@ -1,5 +1,5 @@
 # code4community message board
- Simple message board where user can post timestamped messages. Developed using Flask, SQLAlchemy, HTML, CSS, and JavaScript
+ Simple message board where user can post timestamped messages. Developed using Python, Flask, SQLAlchemy, HTML, CSS, and JavaScript
 
 ## Table of Contents
 
