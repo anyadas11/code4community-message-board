@@ -11,7 +11,6 @@
 
 ## Features
 
-- Messages are posted anonymously
 - Each message features message content and timestamp (UTC-5)
 - Messages are displayed from most to least recent.
 - Each message is limited to 128 characters.
