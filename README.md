@@ -12,10 +12,11 @@
 ## Features
 
 - Messages are posted anonymously
-- Message board features message content and timestamp (UTC-5)
+- Each message features message content and timestamp (UTC-5)
 - Messages are displayed from most to least recent.
 - Each message is limited to 128 characters.
 - Delete button performs a soft delete and causes message to be removed from the message board, however, data is preserved on SQLite database and will survive an application restart
+- When hosted on a nonlocal server, users have the capability to post/view messages from multiple computers
 
 ## Getting Started
 
