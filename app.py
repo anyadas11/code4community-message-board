@@ -16,11 +16,11 @@ class Message(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     deleted = db.Column(db.Boolean, default=False)
 
-# Function to clear messages
-'''def clear_messages():
+# Function to hard delete messages from database
+def clear_messages():
     with app.app_context():
         db.session.query(Message).delete()
-        db.session.commit()'''
+        db.session.commit()
 
 @app.route('/')
 def index():
